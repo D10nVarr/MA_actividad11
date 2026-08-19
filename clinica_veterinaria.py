@@ -1,0 +1,173 @@
+import json
+
+ARCHIVO = "clinica.json"
+
+def inicializar_sistema():
+    try:
+        with open(ARCHIVO, "r", encoding="utf-8") as f:
+            json.load(f)
+    except FileNotFoundError:
+        datos = {
+            "mascotas": [],
+            "consultas": [],
+            "vacunas": [],
+            "documentos": []
+        }
+        with open(ARCHIVO, "w", encoding="utf-8") as f:
+            json.dump(datos, f, indent=4)
+
+def cargar_datos():
+    with open(ARCHIVO, "r", encoding="utf-8") as f:
+        return json.load(f)
+
+def guardar_datos(datos):
+    with open(ARCHIVO, "w", encoding="utf-8") as f:
+        json.dump(datos, f, indent=4, ensure_ascii=False)
+
+
+def registrar_mascotas():
+    datos = cargar_datos()
+
+    print("\nREGISTRAR MASCOTAS:")
+    codigo = input("Código: ")
+    nombre = input("Nombre: ")
+    especie = input("especie: ")
+    raza = input("Raza: ")
+    fecha_nacimiento = input("Fecha de nacimiento: ")
+    nombre_propietario = input("nombre del propietario: ")
+    while True:
+        telefono_str = input("Ingrese el teléfono del propietario: ")
+        if telefono_str.isdigit():
+            telefono = int(telefono_str)
+            break
+        else:
+            print("Precio no valido")
+    while True:
+        print("\nEstado : 1=activo | 2=inactivo): ")
+        estado = input("Seleccione el estado de la mascota: ")
+        if estado == "1":
+            estado = "activo"
+            break
+        elif estado == "2":
+            estado = "inactivo"
+            break
+        else:
+            print("Estado no válido")
+
+    registro = {
+        "codigo": codigo,
+        "nombre": nombre,
+        "especie": especie,
+        "raza": raza,
+        "fecha_nacimiento": fecha_nacimiento,
+        "nombre_propietario": nombre_propietario,
+        "telefono": telefono,
+        "estado": estado,
+    }
+
+    datos["mascotas"].append(registro)
+    guardar_datos(datos)
+
+    print("\nInformación almacenada correctamente.")
+
+
+def mostrar_catalogo(catalogo):
+    print("\n--- CATÁLOGO DE VIDEOJUEGOS ---")
+    if not catalogo:
+        print("El catálogo está vacío.")
+        return
+
+    for juego in catalogo:
+        print(f"\nCódigo: {juego['codigo']}")
+        print(f"Nombre: {juego['nombre']}")
+        print(f"Género: {juego['genero']}")
+        print(f"Fecha de creación: {juego['fecha_creacion']}")
+        print(f"Precio: Q{juego['precio']:.2f}")
+        print(f"Disponible: {juego['disponible']}")
+        print(f"Plataformas: {juego['plataformas']}")
+
+
+def buscar_por_codigo(catalogo):
+    print("\n--- BUSCAR POR CÓDIGO ---")
+    codigo = input("Ingrese el código a buscar: ")
+
+    for juego in catalogo:
+        if juego["codigo"] == codigo:
+            print(f"\nCódigo: {juego['codigo']}")
+            print(f"Nombre: {juego['nombre']}")
+            print(f"Género: {juego['genero']}")
+            print(f"Fecha de creación: {juego['fecha_creacion']}")
+            print(f"Precio: Q{juego['precio']:.2f}")
+            print(f"Disponible: {juego['disponible']}")
+            print(f"Plataformas: {juego['plataformas']}")
+            return
+
+    print("No se encontró ningún videojuego con ese código.")
+
+
+def mostrar_disponibles(catalogo):
+    print("\n--- VIDEOJUEGOS DISPONIBLES ---")
+    for juego in catalogo:
+        if (
+            juego["disponible"].lower() == "si"
+            or juego["disponible"].lower() == "sí"
+        ):
+            print(f"\nCódigo: {juego['codigo']}")
+            print(f"Nombre: {juego['nombre']}")
+            print(f"Precio: Q{juego['precio']:.2f}")
+
+
+def mostrar_por_plataforma(catalogo):
+    print("\n--- BUSCAR POR PLATAFORMA ---")
+    plataforma = input("Ingrese la plataforma: ").lower()
+
+    for juego in catalogo:
+        if plataforma in juego["plataformas"].lower():
+            print(f"\nCódigo: {juego['codigo']}")
+            print(f"Nombre: {juego['nombre']}")
+            print(f"Plataformas: {juego['plataformas']}")
+
+
+def calcular_precio_promedio(catalogo):
+    print("\n--- PRECIO PROMEDIO ---")
+    if not catalogo:
+        print("El catálogo está vacío.")
+        return
+
+    total = 0
+    for juego in catalogo:
+        total += juego["precio"]
+
+    promedio = total / len(catalogo)
+    print(f"El precio promedio es: Q{promedio:.2f}")
+
+
+
+inicializar_sistema()
+
+while True:
+    print("""\n  SISTEMA DE GESTIÓN DE CATÁLOGO 
+    1. Registrar una mascota.
+    2. Mostrar las mascotas registradas.
+    3. Buscar una mascota por código.
+    4. Registrar una consulta para una mascota.
+    5. Consultar el historial de consultas de una mascota.
+    6. Registrar una vacuna.
+    7. Consultar las vacunas de una mascota.
+    8. Asociar al menos un archivo externo a una mascota.
+    9. Salir del programa.
+    
+    """)
+
+    opcion = input("Seleccione una opción: ")
+
+    match opcion:
+        case "1":
+            registrar_mascotas()
+        case "2":
+            continue
+        case "9":
+            print("\nSaliendo del programa...")
+            break
+        case _:
+            print("Opción inválida.")
