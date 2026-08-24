@@ -67,55 +67,69 @@ def registrar_mascotas():
 
     datos["mascotas"].append(registro)
     guardar_datos(datos)
-
-    print("\nInformación almacenada correctamente.")
-
+    print("\nMascota registrada.")
 
 def mostrar_catalogo(catalogo):
-    print("\n--- CATÁLOGO DE VIDEOJUEGOS ---")
-    if not catalogo:
-        print("El catálogo está vacío.")
+    datos = cargar_datos()
+    print("\n--- MASCOTAS REGISTRADAS ---")
+    if not datos["mascotas"]:
+        print("No hay mascotas registradas.")
         return
 
-    for juego in catalogo:
-        print(f"\nCódigo: {juego['codigo']}")
-        print(f"Nombre: {juego['nombre']}")
-        print(f"Género: {juego['genero']}")
-        print(f"Fecha de creación: {juego['fecha_creacion']}")
-        print(f"Precio: Q{juego['precio']:.2f}")
-        print(f"Disponible: {juego['disponible']}")
-        print(f"Plataformas: {juego['plataformas']}")
+    for m in datos:
+        print(f"\nCódigo: {m['codigo']}")
+        print(f"Nombre: {m['nombre']}")
+        print(f"Género: {m['genero']}")
+        print(f"Fecha de creación: {m['fecha_creacion']}")
+        print(f"Precio: Q{m['precio']:.2f}")
+        print(f"Disponible: {m['disponible']}")
+        print(f"Plataformas: {m['plataformas']}")
 
 
 def buscar_por_codigo(catalogo):
-    print("\n--- BUSCAR POR CÓDIGO ---")
-    codigo = input("Ingrese el código a buscar: ")
+    datos = cargar_datos()
+    print("\n--- BUSCAR POR MASCOTAS ---")
+    codigo = input("Ingrese el código de la mascota: ")
 
-    for juego in catalogo:
-        if juego["codigo"] == codigo:
-            print(f"\nCódigo: {juego['codigo']}")
-            print(f"Nombre: {juego['nombre']}")
-            print(f"Género: {juego['genero']}")
-            print(f"Fecha de creación: {juego['fecha_creacion']}")
-            print(f"Precio: Q{juego['precio']:.2f}")
-            print(f"Disponible: {juego['disponible']}")
-            print(f"Plataformas: {juego['plataformas']}")
+    for m in datos["mascotas"]:
+        if m["codigo"] == codigo:
+            print(f"\nCódigo: {m['codigo']}")
+            print(f"Nombre: {m['nombre']}")
+            print(f"Especie: {m['especie']}")
+            print(f"Raza: {m['raza']}")
+            print(f"Fecha de nacimiento: {m['fecha_nacimiento']}")
+            print(f"Propietario: {m['propietario']}")
+            print(f"Teléfono: {m['telefono']}")
+            print(f"Estado: {m['estado']}")
             return
 
-    print("No se encontró ningún videojuego con ese código.")
+    print("No se encontró ningúna mascota registrada.")
 
 
-def mostrar_disponibles(catalogo):
-    print("\n--- VIDEOJUEGOS DISPONIBLES ---")
-    for juego in catalogo:
-        if (
-            juego["disponible"].lower() == "si"
-            or juego["disponible"].lower() == "sí"
-        ):
-            print(f"\nCódigo: {juego['codigo']}")
-            print(f"Nombre: {juego['nombre']}")
-            print(f"Precio: Q{juego['precio']:.2f}")
+def registrar_consulta():
+    datos = cargar_datos()
+    print("\n--- REGISTRAR CONSULTA ---")
+    codigo_consulta = input("Código de consulta: ")
+    codigo_mascota = input("Código de mascota: ")
+    fecha = input("Fecha: ")
+    motivo = input("Motivo: ")
+    diagnostico = input("Diagnóstico: ")
+    tratamiento = input("Tratamiento: ")
+    costo = float(input("Costo: "))
 
+    consulta = {
+        "codigo_consulta": codigo_consulta,
+        "codigo_mascota": codigo_mascota,
+        "fecha": fecha,
+        "motivo": motivo,
+        "diagnostico": diagnostico,
+        "tratamiento": tratamiento,
+        "costo": costo
+    }
+
+    datos["consultas"].append(consulta)
+    guardar_datos(datos)
+    print("\nConsulta registrada.")
 
 def mostrar_por_plataforma(catalogo):
     print("\n--- BUSCAR POR PLATAFORMA ---")
