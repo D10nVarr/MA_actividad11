@@ -128,6 +128,7 @@ def registrar_consulta():
     }
 
 
+
     datos["consultas"].append(consulta)
     guardar_datos(datos)
     print("\nConsulta registrada.")
