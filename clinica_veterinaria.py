@@ -127,8 +127,6 @@ def registrar_consulta():
         "costo": costo
     }
 
-
-
     datos["consultas"].append(consulta)
     guardar_datos(datos)
     print("\nConsulta registrada.")
