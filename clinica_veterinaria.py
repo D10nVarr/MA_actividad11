@@ -1,6 +1,8 @@
 import json
+import os
 
 ARCHIVO = "clinica.json"
+
 
 def inicializar_sistema():
     try:
@@ -16,9 +18,11 @@ def inicializar_sistema():
         with open(ARCHIVO, "w", encoding="utf-8") as f:
             json.dump(datos, f, indent=4)
 
+
 def cargar_datos():
     with open(ARCHIVO, "r", encoding="utf-8") as f:
         return json.load(f)
+
 
 def guardar_datos(datos):
     with open(ARCHIVO, "w", encoding="utf-8") as f:
@@ -28,22 +32,24 @@ def guardar_datos(datos):
 def registrar_mascotas():
     datos = cargar_datos()
 
-    print("\nREGISTRAR MASCOTAS:")
+    print("\n--- REGISTRAR MASCOTA ---")
     codigo = input("Código: ")
     nombre = input("Nombre: ")
-    especie = input("especie: ")
+    especie = input("Especie: ")
     raza = input("Raza: ")
     fecha_nacimiento = input("Fecha de nacimiento: ")
-    nombre_propietario = input("nombre del propietario: ")
+    nombre_propietario = input("Nombre del propietario: ")
+
     while True:
         telefono_str = input("Ingrese el teléfono del propietario: ")
         if telefono_str.isdigit():
             telefono = int(telefono_str)
             break
         else:
-            print("Precio no valido")
+            print("Teléfono no válido. Ingrese solo números.")
+
     while True:
-        print("\nEstado : 1=activo | 2=inactivo): ")
+        print("\nEstado: 1 = activo | 2 = inactivo")
         estado = input("Seleccione el estado de la mascota: ")
         if estado == "1":
             estado = "activo"
@@ -67,28 +73,28 @@ def registrar_mascotas():
 
     datos["mascotas"].append(registro)
     guardar_datos(datos)
-    print("\nMascota registrada.")
+    print("\nMascota registrada exitosamente.")
 
-def mostrar_catalogo(catalogo):
+
+def mostrar_mascotas():
     datos = cargar_datos()
     print("\n--- MASCOTAS REGISTRADAS ---")
     if not datos["mascotas"]:
         print("No hay mascotas registradas.")
         return
 
-    for m in datos:
+    for m in datos["mascotas"]:
         print(f"\nCódigo: {m['codigo']}")
         print(f"Nombre: {m['nombre']}")
-        print(f"Género: {m['genero']}")
-        print(f"Fecha de creación: {m['fecha_creacion']}")
-        print(f"Precio: Q{m['precio']:.2f}")
-        print(f"Disponible: {m['disponible']}")
-        print(f"Plataformas: {m['plataformas']}")
+        print(f"Especie: {m['especie']}")
+        print(f"Propietario: {m['nombre_propietario']}")
+        print(f"Teléfono: {m['telefono']}")
+        print(f"Estado: {m['estado']}")
 
 
-def buscar_por_codigo(catalogo):
+def buscar_por_codigo():
     datos = cargar_datos()
-    print("\n--- BUSCAR POR MASCOTAS ---")
+    print("\n--- BUSCAR MASCOTA ---")
     codigo = input("Ingrese el código de la mascota: ")
 
     for m in datos["mascotas"]:
@@ -98,12 +104,12 @@ def buscar_por_codigo(catalogo):
             print(f"Especie: {m['especie']}")
             print(f"Raza: {m['raza']}")
             print(f"Fecha de nacimiento: {m['fecha_nacimiento']}")
-            print(f"Propietario: {m['propietario']}")
+            print(f"Propietario: {m['nombre_propietario']}")
             print(f"Teléfono: {m['telefono']}")
             print(f"Estado: {m['estado']}")
             return
 
-    print("No se encontró ningúna mascota registrada.")
+    print("No se encontró ninguna mascota registrada con ese código.")
 
 
 def registrar_consulta():
@@ -127,41 +133,111 @@ def registrar_consulta():
         "costo": costo
     }
 
-
     datos["consultas"].append(consulta)
     guardar_datos(datos)
-    print("\nConsulta registrada.")
-
-def mostrar_por_plataforma(catalogo):
-    print("\n--- BUSCAR POR PLATAFORMA ---")
-    plataforma = input("Ingrese la plataforma: ").lower()
-
-    for juego in catalogo:
-        if plataforma in juego["plataformas"].lower():
-            print(f"\nCódigo: {juego['codigo']}")
-            print(f"Nombre: {juego['nombre']}")
-            print(f"Plataformas: {juego['plataformas']}")
+    print("\nConsulta registrada exitosamente.")
 
 
-def calcular_precio_promedio(catalogo):
-    print("\n--- PRECIO PROMEDIO ---")
-    if not catalogo:
-        print("El catálogo está vacío.")
+def consultar_consulta():
+    datos = cargar_datos()
+    print("\n--- HISTORIAL DE CONSULTAS ---")
+    codigo = input("Ingrese el código de la mascota a consultar: ")
+
+    consultas_mascota = [c for c in datos["consultas"] if c.get("codigo_mascota") == codigo]
+
+    if not consultas_mascota:
+        print(f"No se encontraron consultas registradas para la mascota con código: {codigo}.")
         return
 
-    total = 0
-    for juego in catalogo:
-        total += juego["precio"]
+    for c in consultas_mascota:
+        print(f"\nCódigo Consulta: {c['codigo_consulta']}")
+        print(f"Fecha: {c['fecha']}")
+        print(f"Motivo: {c['motivo']}")
+        print(f"Diagnóstico: {c['diagnostico']}")
+        print(f"Tratamiento: {c['tratamiento']}")
+        print(f"Costo: Q{c['costo']:.2f}")
 
-    promedio = total / len(catalogo)
-    print(f"El precio promedio es: Q{promedio:.2f}")
+
+def registrar_vacuna():
+    datos = cargar_datos()
+    print("\n--- REGISTRAR VACUNA ---")
+    codigo_mascota = input("Código de mascota: ")
+    nombre_vacuna = input("Nombre de la vacuna: ")
+    fecha_aplicacion = input("Fecha de aplicación: ")
+    proxima_dosis = input("Próxima dosis: ")
+    veterinario = input("Veterinario responsable: ")
+
+    vacuna = {
+        "codigo_mascota": codigo_mascota,
+        "nombre_vacuna": nombre_vacuna,
+        "fecha_aplicacion": fecha_aplicacion,
+        "proxima_dosis": proxima_dosis,
+        "veterinario": veterinario
+    }
+
+    datos["vacunas"].append(vacuna)
+    guardar_datos(datos)
+    print("\nVacuna registrada exitosamente.")
 
 
+def consultar_vacunas():
+    datos = cargar_datos()
+    print("\n--- CONSULTAR VACUNAS ---")
+    codigo = input("Ingrese el código de la mascota: ")
+
+    vacunas_mascota = [v for v in datos["vacunas"] if v.get("codigo_mascota") == codigo]
+
+    if not vacunas_mascota:
+        print(f"No se encontraron vacunas registradas para la mascota con código: {codigo}.")
+        return
+
+    for v in vacunas_mascota:
+        print(f"\nVacuna: {v['nombre_vacuna']}")
+        print(f"Fecha de aplicación: {v['fecha_aplicacion']}")
+        print(f"Próxima dosis: {v['proxima_dosis']}")
+        print(f"Veterinario: {v['veterinario']}")
+
+
+def asociar_documento():
+    datos = cargar_datos()
+    print("\nASOCIAR ARCHIVO EXTERNO ---")
+    codigo = input("Ingrese el código de la mascota: ")
+
+    print("\nArchivos detectados en la carpeta del programa:")
+
+    archivos_locales = [f for f in os.listdir('.') if
+                        os.path.isfile(f) and f not in ["clinica_veterinaria.py", "clinica.json"]]
+
+    if not archivos_locales:
+        print("  (No se detectaron archivos adicionales en esta carpeta)")
+    else:
+        for archivo in archivos_locales:
+            print(f"  - {archivo}")
+
+    nombre_documento = input("\nIngrese una descripción del documento (ej. Radiografía, Carnet): ")
+
+    while True:
+        nombre_archivo = input("Ingrese el nombre exacto del archivo de la lista anterior (ej. foto1.jpg): ")
+
+        if os.path.exists(nombre_archivo):
+            break
+        else:
+            print(f"Error: El archivo '{nombre_archivo}' no existe en la carpeta. Intente de nuevo.")
+
+    documento = {
+        "codigo_mascota": codigo,
+        "nombre_documento": nombre_documento,
+        "ruta_archivo": nombre_archivo
+    }
+
+    datos["documentos"].append(documento)
+    guardar_datos(datos)
+    print(f"\nDocumento '{nombre_archivo}' asociado exitosamente.")
 
 inicializar_sistema()
 
 while True:
-    print("""\n  SISTEMA DE GESTIÓN DE CATÁLOGO 
+    print("""\nSISTEMA DE GESTIÓN DE CATÁLOGO 
     1. Registrar una mascota.
     2. Mostrar las mascotas registradas.
     3. Buscar una mascota por código.
@@ -171,18 +247,29 @@ while True:
     7. Consultar las vacunas de una mascota.
     8. Asociar al menos un archivo externo a una mascota.
     9. Salir del programa.
-    
     """)
 
-    opcion = input("Seleccione una opción: ")
+    opcion = input("\nSeleccione una opción: ")
 
     match opcion:
         case "1":
             registrar_mascotas()
         case "2":
-            continue
+            mostrar_mascotas()
+        case "3":
+            buscar_por_codigo()
+        case "4":
+            registrar_consulta()
+        case "5":
+            consultar_consulta()
+        case "6":
+            registrar_vacuna()
+        case "7":
+            consultar_vacunas()
+        case "8":
+            asociar_documento()
         case "9":
             print("\nSaliendo del programa...")
             break
         case _:
-            print("Opción inválida.")
+            print("Opción inválida. Por favor, intente de nuevo.")

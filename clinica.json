@@ -1,0 +1,81 @@
+{
+    "mascotas": [
+        {
+            "codigo": "M001",
+            "nombre": "Lulu",
+            "especie": "Perro",
+            "raza": "Pomerania",
+            "fecha_nacimiento": "22/01/2015",
+            "nombre_propietario": "Manuel",
+            "telefono": 12345678,
+            "estado": "activo"
+        },
+        {
+            "codigo": "M002",
+            "nombre": "Krypto",
+            "especie": "Perro",
+            "raza": "Golden",
+            "fecha_nacimiento": "10/08/2023",
+            "nombre_propietario": "Doña María",
+            "telefono": 44332211,
+            "estado": "activo"
+        },
+        {
+            "codigo": "M003",
+            "nombre": "Eevee",
+            "especie": "Perro",
+            "raza": "Labrador",
+            "fecha_nacimiento": "05/11/2025",
+            "nombre_propietario": "Javier Pérez",
+            "telefono": 33221100,
+            "estado": "inactivo"
+        }
+    ],
+
+    "consultas": [
+        {
+            "codigo_consulta": "C001",
+            "codigo_mascota": "M001",
+            "fecha": "20/08/2026",
+            "motivo": "Control anual y revisión general",
+            "diagnostico": "Paciente sano",
+            "tratamiento": "Desparasitante interno en pastilla",
+            "costo": 150.0
+        },
+        {
+            "codigo_consulta": "C002",
+            "codigo_mascota": "M002",
+            "fecha": "22/08/2026",
+            "motivo": "Cojera pata delantera",
+            "diagnostico": "Esguince leve",
+            "tratamiento": "Reposo y antiinflamatorio por 5 días",
+            "costo": 250.0
+        }
+
+    ],
+    "vacunas": [
+        {
+            "codigo_mascota": "M001",
+            "nombre_vacuna": "Múltiple Canina (Séxtuple)",
+            "fecha_aplicacion": "20/08/2026",
+            "proxima_dosis": "20/08/2027",
+            "veterinario": "Dr. Manuel Rojas"
+        },
+        {
+            "codigo_mascota": "M002",
+            "nombre_vacuna": "Phizer",
+            "fecha_aplicacion": "15/01/2026",
+            "proxima_dosis": "15/01/2027",
+            "veterinario": "Dra. López"
+        }
+
+    ],
+    "documentos": [
+        {
+            "codigo_mascota": "M002",
+            "nombre_documento": "Imagen del paciente",
+            "ruta_archivo": "krypto.jpg"
+        }
+
+    ]
+}
